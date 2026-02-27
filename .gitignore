@@ -1,0 +1,29 @@
+# Зависимости
+node_modules/
+vendor/
+
+# Файлы окружения
+.env
+.env.local
+.env.*.local
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Директории сборки
+dist/
+build/
+*.pyc
+__pycache__/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store

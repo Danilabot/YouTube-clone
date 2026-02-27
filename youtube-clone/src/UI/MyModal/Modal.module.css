@@ -1,0 +1,80 @@
+/* .myModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.myModalContent {
+  padding: 25px;
+  background: rgb(255, 255, 255);
+  border-radius: 16px;
+  min-width: 250px;
+}
+
+.myModal.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+.myModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+}
+
+.myModal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.myModalContent {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 440px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.myModal.active .myModalContent {
+  transform: scale(1);
+}
+
+/* Стили для скролла внутри модалки */
+.myModalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.myModalContent::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.myModalContent::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.myModalContent::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
