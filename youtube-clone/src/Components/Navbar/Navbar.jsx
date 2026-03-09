@@ -1,5 +1,5 @@
 import './Navbar.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import menu_icon from '../../assets/menu.png'
 import logo from '../../assets/logo.png'
 import search_icon from '../../assets/search.png'
@@ -8,8 +8,20 @@ import more_icon from '../../assets/more.png'
 import notification_icon from '../../assets/notification.png'
 import profile_icon from '../../assets/jack.png'
 import { Myinput } from '../../UI/input/Myinput'
+import { useState } from 'react'
 
 const Navbar = ({ setSidebar, filter, setFilter, isOpen, setIsOpen }) => {
+  const [searchQuery,setSearchQuery] = useState('')
+  const navigate = useNavigate()
+
+   const handleSubmit = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
+      setSearchQuery('')  // очистить после поиска
+    }
+  }
+
   return (
     <nav className="flex-div">
       <div className="nav-left flex-div">
@@ -24,15 +36,18 @@ const Navbar = ({ setSidebar, filter, setFilter, isOpen, setIsOpen }) => {
         </Link>
       </div>
       <div className="nav-middle flex-div">
-        <div className="search-box flex-div">
+          <form onSubmit={handleSubmit} className="search-box flex-div">
           <Myinput
-            value={filter.query}
-            onChange={(e) => setFilter({ ...filter, query: e.target.value })}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             type="text"
             placeholder="Search"
           />
-          <img src={search_icon} alt="" />
-        </div>
+          <button type='submit'>
+          <img  src={search_icon} alt="" />
+          </button>
+          </form>
+        
       </div>
       <div className="nav-right flex-div">
         <img src={upload_icon} alt="" />

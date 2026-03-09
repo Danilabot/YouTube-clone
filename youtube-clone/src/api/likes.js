@@ -6,7 +6,7 @@ export const getLikesCount = async (videoId) => {
 };
 
 export const getLikeStatus = async (videoId) => {
-  const res = await fetch(`${API_URL}/${videoId}/status`, {
+  const res = await fetch(`${API_URL}/${videoId}/like-status`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },

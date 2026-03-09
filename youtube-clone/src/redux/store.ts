@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/authSlice'
+import themeReducer from './slices/themeSlice'
 export const store = configureStore({
   reducer: {
-    auth: authReducer
-    // потом добавим subscriptions: subscriptionsReducer
+    auth: authReducer,
+    theme: themeReducer,
+    // потом добавить subscriptions: subscriptionsReducer
   }
 })
 

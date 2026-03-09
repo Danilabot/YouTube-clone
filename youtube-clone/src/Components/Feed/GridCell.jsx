@@ -1,37 +1,37 @@
 import './Feed.css'
-import { memo } from 'react'
+import { memo, useCallback, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { formatDuration } from '../../utils/formatDuration'
-import { value_converter } from '../../utils/data'
-import { useState, useEffect } from 'react'
-import { API_KEY } from '../../utils/data'
+import { value_converter, API_KEY } from '../../utils/data'
 
 const GridCell = memo(({ item, style, columnGap, rowGap }) => {
   const [channelLogo, setChannelLogo] = useState(null)
 
+  const fetchLogo = useCallback(async () => {
+    try {
+      const channelId = item?.snippet?.channelId
+      if (!channelId) return
+      
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${API_KEY}`,
+      )
+      const data = await res.json()
+      if (data.items && data.items.length > 0) {
+        setChannelLogo(data.items[0].snippet.thumbnails.default.url)
+      }
+    } catch (err) {
+      console.error('Error loading channel logo', err)
+    }
+  }, [item?.snippet?.channelId])
+
   useEffect(() => {
     if (!item) return
-
-    const fetchLogo = async () => {
-      try {
-        const channelId = item.snippet.channelId
-        const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${API_KEY}`,
-        )
-        const data = await res.json()
-        if (data.items && data.items.length > 0) {
-          setChannelLogo(data.items[0].snippet.thumbnails.default.url)
-        }
-      } catch (err) {
-        console.error('Error loading channel logo', err)
-      }
-    }
-
     fetchLogo()
-  }, [item])
+  }, [fetchLogo, item])
 
   if (!item) return null
+
   return (
     <div
       style={{
@@ -44,7 +44,7 @@ const GridCell = memo(({ item, style, columnGap, rowGap }) => {
       }}
       className="card"
     >
-      <Link to={`video/${item.snippet.categoryId}/${item.id}`}>
+      <Link to={`/video/${item.snippet.categoryId}/${item.id}`}>
         <div className="thumbnail-wrapper">
           <img
             src={item.snippet.thumbnails.medium.url}
@@ -67,15 +67,17 @@ const GridCell = memo(({ item, style, columnGap, rowGap }) => {
           </div>
         </div>
         <div className="video-info">
-          <img
-            src={channelLogo}
-            alt={item.snippet.channelTitle}
-            className="logo"
-          />
+          <Link to={`/channel/${item?.snippet?.channelId}`}>
+            <img
+              src={channelLogo}
+              alt={item.snippet.channelTitle}
+              className="logo"
+            />
+          </Link>
 
           <div className="video-text">
-            <h2>{item.snippet.title}</h2>
-            <h3>{item.snippet.channelTitle}</h3>
+              <h2>{item.snippet.title}</h2>
+              <h3>{item.snippet.channelTitle}</h3>
             <p>
               {value_converter(item.statistics.viewCount)} views &bull;{' '}
               {formatDistanceToNow(new Date(item.snippet.publishedAt), {
@@ -90,5 +92,4 @@ const GridCell = memo(({ item, style, columnGap, rowGap }) => {
 })
 
 GridCell.displayName = 'GridCell'
-
 export default GridCell

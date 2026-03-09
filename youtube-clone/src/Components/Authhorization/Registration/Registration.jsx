@@ -3,74 +3,69 @@ import { Myinput } from '../../../UI/input/Myinput'
 import styles from './Registration.module.css'
 import icon_hidden from '../../../assets/icon_hidden.png'
 import icon_eye from '../../../assets/icon_eye.png'
-function Register({ setAuthMode }) {
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import {
+  setCredentials,
+  setLoading,
+  setError,
+} from '../../../redux/slices/authSlice'
+
+function Register({ setAuthMode,  onSuccess }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const dispatch = useAppDispatch()
+  const authError = useAppSelector((state) => state.auth.error)
+  const loading = useAppSelector((state) => state.auth.loading)
 
   function validateForm() {
-    if (!name.trim()) {
-      setError('Имя обязательно')
-      return false
-    }
-    if (!email.includes('@')) {
-      setError('Введите корректный email')
-      return false
-    }
-    if (password.length < 6) {
-      setError('Пароль должен быть не менее 6 символов')
-      return false
-    }
-    if (password !== confirmPassword) {
-      setError('Пароли не совпадают')
-      return false
-    }
-    return true
+    if (!name.trim()) return 'Имя обязательно'
+    if (!email.includes('@')) return 'Введите корректный email'
+    if (password.length < 6) return 'Пароль должен быть не менее 6 символов'
+    if (password !== confirmPassword) return 'Пароли не совпадают'
+    return null
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    setError('')
-    
-    if (!validateForm()) return
+    dispatch(setLoading(true))
 
-    setLoading(true)
+    const errorMsg = validateForm()
+    if (errorMsg) {
+      dispatch(setError(errorMsg))
+      dispatch(setLoading(false))
+      return
+    }
 
-    fetch('http://localhost:5000/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: password
-      }),
-    })
-      .then(async (res) => {
-        const data = await res.json()
-        if (!res.ok) {
-          throw new Error(data.error || 'Ошибка регистрации')
-        }
-        return data
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          confirmPassword: password,
+        }),
       })
-      .then((data) => {
-        console.log(data)
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        window.location.reload()
-      })
-      .catch((error) => {
-        console.log('полная ошибка:', error)
-        setError(error.message)
-      })
-      .finally(() => setLoading(false))
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Ошибка регистрации')
+      }
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      dispatch(setCredentials({ user: data.user, token: data.token }))
+      onSuccess?.()
+    } catch (error) {
+      dispatch(setError(error.message))
+    } finally {
+      dispatch(setLoading(false))
+    }
   }
 
   return (
@@ -117,7 +112,7 @@ function Register({ setAuthMode }) {
             className={styles.passwordToggle}
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <img src={icon_hidden}/> : <img src={icon_eye}/>}
+            {showPassword ? <img src={icon_hidden} /> : <img src={icon_eye} />}
           </button>
         </div>
       </div>
@@ -138,27 +133,24 @@ function Register({ setAuthMode }) {
             className={styles.passwordToggle}
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
-            {showConfirmPassword ? <img src={icon_hidden}/> : <img src={icon_eye}/>}
+            {showConfirmPassword ? (
+              <img src={icon_hidden} />
+            ) : (
+              <img src={icon_eye} />
+            )}
           </button>
         </div>
       </div>
 
-      {error && <div className={styles.error}>{error}</div>}
+      {authError && <div className={styles.error}>{authError}</div>}
 
-      <button 
-        type="submit" 
-        className={styles.submitButton}
-        disabled={loading}
-      >
+      <button type="submit" className={styles.submitButton} disabled={loading}>
         {loading ? 'Регистрация...' : 'Зарегистрироваться'}
       </button>
 
       <p className={styles.footerText}>
         Уже есть аккаунт?{' '}
-        <span 
-          className={styles.link}
-          onClick={() => setAuthMode('login')}
-        >
+        <span className={styles.link} onClick={() => setAuthMode('login')}>
           Войти
         </span>
       </p>

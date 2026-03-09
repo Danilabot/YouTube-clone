@@ -1,12 +1,9 @@
 import './PlayVideo.css'
-import video1 from '../../assets/video.mp4'
-import LikeButton from '../LikeButton/LikeButton'
+import LikeButton from '../../Components/LikeWeb/LikeButton/LikeButton'
 import like from '../../assets/like.png'
 import dislike from '../../assets/dislike.png'
 import share from '../../assets/share.png'
 import save from '../../assets/save.png'
-import jack from '../../assets/jack.png'
-import user_profile from '../../assets/user_profile.jpg'
 import { useEffect, useState } from 'react'
 import { API_KEY, value_converter } from '../../utils/data'
 import { formatDistanceToNow } from 'date-fns'
@@ -14,10 +11,12 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { SubscribeButton } from '../SubscribeButton/SubscribeButton'
 import styles from '../SubscribeButton/SubscribeButton.module.css'
-console.log('styles:', styles)
+import {LikeComment} from '../LikeWeb/LikeComment/LIkeComment'
+import Dislike from '../LikeWeb/Dislike/Dislike'
+import {SaveButton} from '../SaveButton/SaveButton'
 
-const PlayVideo = ({ likes, liked, handleLike }) => {
-  const { videoId,channelId } = useParams()
+const PlayVideo = ({ likes, liked, handleLike, dislikes, disliked, handleDislike }) => {
+  const { videoId, channelId } = useParams()
   const [apiData, setApiData] = useState(null)
   const [channelData, setChannelData] = useState(null)
   const [commentData, setCommentData] = useState([])
@@ -42,22 +41,26 @@ const PlayVideo = ({ likes, liked, handleLike }) => {
       .then((res) => res.json())
       .then((data) => setCommentData(data.items))
   }
+  useEffect(() => {
+  }, [liked, likes])
 
   useEffect(() => {
     fetchVideoData()
+     window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // для плавности сролл вверх
+  })
   }, [videoId])
-useEffect(() => {
-  console.log('apiData ИЗМЕНИЛСЯ:', apiData)
-  console.log('channelId ВНУТРИ apiData:', apiData?.snippet?.channelId)
-}, [apiData])
   useEffect(() => {
-    fetchOtherData()
+  }, [apiData])
+  useEffect(() => {
+    if(apiData){
+      fetchOtherData()
+    }
   }, [apiData])
 
   return (
-    
     <div className="play-video">
-      {console.log('apiData полный:', apiData)}
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
         frameBorder="0"
@@ -78,34 +81,29 @@ useEffect(() => {
         </p>
         <div>
           <span>
-            {/* <img src={like} alt="" />
-            {apiData ? value_converter(apiData.statistics.likeCount) : '155'} */}
             <LikeButton
               totalLikes={
-                (apiData ? Number(apiData.statistics.likeCount) : '') + likes
+                (apiData ? Number(apiData.statistics.likeCount) : 0) + likes
               }
               liked={liked}
               onLike={handleLike}
             />
           </span>
           <span>
-            <img src={dislike} alt="" />
+            <Dislike dislikes={dislikes} disliked={disliked} onDislike={ handleDislike} />
           </span>
-          <span>
-            <img src={share} alt="" />
-            Share
-          </span>
-          <span>
-            <img src={save} alt="" />
-            Save
-          </span>
+            <span>
+              <SaveButton videoId = {videoId} videoData={apiData} />
+            </span>
+          
+          
         </div>
       </div>
       <hr />
       <div className="publisher">
-        <Link to={`/channel/${apiData?.snippet?.channelId }`}>
+        <Link to={`/channel/${apiData?.snippet?.channelId}`}>
           <img
-            src={channelData ? channelData.snippet.thumbnails.default.url : ''}
+            src={channelData ? channelData.snippet.thumbnails.default.url : null}
             alt=""
           />
         </Link>
@@ -120,12 +118,11 @@ useEffect(() => {
             Subscribers
           </span>
         </div>
-        <div>channelId: {channelId}</div>
- {apiData && apiData.snippet && apiData.snippet.channelId ? (
-  <SubscribeButton channelId={apiData.snippet.channelId} />
-) : (
-  <div>Кнопка не может быть отображена</div>
-)}
+        {apiData && apiData.snippet && apiData.snippet.channelId ? (
+          <SubscribeButton channelId={apiData.snippet.channelId} />
+        ) : (
+          <div>Кнопка не может быть отображена</div>
+        )}
       </div>
       <div className="vid-description">
         <p>
@@ -151,12 +148,12 @@ useEffect(() => {
                   <span>1 days ago</span>
                   <p>{item.snippet.topLevelComment.snippet.textDisplay}</p>
                   <div className="comment-action">
-                    <img src={like} alt="" />
-                    <span>
-                      {value_converter(
-                        item.snippet.topLevelComment.snippet.likeCount,
-                      )}
-                    </span>
+                    <LikeComment 
+                      commentId={item.id}
+                      initialLikes={item.snippet.topLevelComment.snippet.likeCount} 
+                    />
+                    
+                    
                     <img src={dislike} alt="" />
                   </div>
                 </h3>

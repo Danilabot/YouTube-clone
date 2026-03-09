@@ -8,11 +8,6 @@ import tech from '../../assets/tech.png'
 import music from '../../assets/music.png'
 import blogs from '../../assets/blogs.png'
 import news from '../../assets/news.png'
-import jack from '../../assets/jack.png'
-import simon from '../../assets/simon.png'
-import tom from '../../assets/tom.png'
-import megan from '../../assets/megan.png'
-import cameron from '../../assets/cameron.png'
 import { SubscriptionList } from '../SubscriptionList/SubscriptionList'
 
 const Sidebar = ({ sidebar, category, setCategory }) => {
@@ -63,6 +58,8 @@ const Sidebar = ({ sidebar, category, setCategory }) => {
          <SubscriptionList/>
         </div>
       </div>
+      
+    
     </div>
   )
 }

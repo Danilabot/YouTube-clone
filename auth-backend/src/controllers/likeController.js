@@ -1,6 +1,6 @@
 const Like = require('../models/Like')
 
-// 🔁 Поставить / убрать лайк
+//  Поставить / убрать лайк
 exports.toggleLike = async (req, res) => {
   try {
     const userId = req.user.id
@@ -35,7 +35,7 @@ exports.toggleLike = async (req, res) => {
   }
 }
 
-// 📊 Получить статус лайка
+//  Получить статус лайка
 exports.getLikeStatus = async (req, res) => {
   try {
     const userId = req.user.id

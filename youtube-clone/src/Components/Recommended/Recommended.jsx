@@ -4,7 +4,8 @@ import { API_KEY } from '../../utils/data'
 import { value_converter } from '../../utils/data'
 import { Link } from 'react-router-dom'
 import { formatDuration } from '../../utils/formatDuration'
-
+import { SaveButton } from '../SaveButton/SaveButton'
+import { memo } from 'react'
 const Recommended = ({ categoryId }) => {
   const [apiData, setApiData] = useState([])
   const [openMenuId, setOpenMenuId] = useState(null) // Для открытого меню
@@ -35,43 +36,16 @@ const Recommended = ({ categoryId }) => {
     setOpenMenuId(openMenuId === videoId ? null : videoId)
   }
 
-  const handleMenuItemClick = (e, action, video) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setOpenMenuId(null)
-    
-    // Действия меню
-    switch(action) {
-      case 'save':
-        console.log('Сохранить видео:', video.snippet.title)
-        // Тут логика сохранения
-        break
-      case 'later':
-        console.log('Смотреть позже:', video.snippet.title)
-        // Тут логика "смотреть позже"
-        break
-      case 'channel':
-        console.log('Перейти на канал:', video.snippet.channelTitle)
-        // Тут навигация на канал
-        break
-      case 'not_interested':
-        console.log('Не интересно:', video.snippet.title)
-        // Тут скрытие видео
-        break
-      default:
-        break
-    }
-  }
 
   return (
     <div className={styles.recommended}>
       {apiData.map((item, index) => {
         const videoId = item.id
-        
+
         return (
           <div key={index} className={styles.side_video_list}>
-            <Link 
-              to={`/video/${item.snippet.categoryId}/${item.id}`} 
+            <Link
+              to={`/video/${item.snippet.categoryId}/${item.id}`}
               className={styles.video_link}
               style={{ display: 'flex', gap: '10px', width: '100%' }}
             >
@@ -81,7 +55,7 @@ const Recommended = ({ categoryId }) => {
                   {formatDuration(item.contentDetails.duration)}
                 </div>
               </div>
-              
+
               <div className={styles.vid_info}>
                 <h4>{item.snippet.title}</h4>
                 <p>{item.snippet.channelTitle}</p>
@@ -90,7 +64,7 @@ const Recommended = ({ categoryId }) => {
             </Link>
 
             {/* Кнопка меню */}
-            <button 
+            <button
               className={styles.menu_button}
               onClick={(e) => handleMenuClick(e, videoId)}
               aria-label="Меню видео"
@@ -99,29 +73,23 @@ const Recommended = ({ categoryId }) => {
             {/* Выпадающее меню */}
             {openMenuId === videoId && (
               <div className={styles.dropdown_menu}>
-                <div 
+                <div
                   className={styles.dropdown_item}
                   onClick={(e) => handleMenuItemClick(e, 'save', item)}
                 >
-                  <span>Сохранить в плейлист</span>
+                  <SaveButton videoId={videoId} />
                 </div>
-                <div 
-                  className={styles.dropdown_item}
-                  onClick={(e) => handleMenuItemClick(e, 'later', item)}
-                >
-                  <span>Смотреть позже</span>
-                </div>
-                <div 
+
+                <div
                   className={styles.dropdown_item}
                   onClick={(e) => handleMenuItemClick(e, 'channel', item)}
                 >
+                  <Link to={`/channel/${item.snippet.channelId}`}>
+                    
                   <span>Перейти на канал</span>
-                </div>
-                <div 
-                  className={styles.dropdown_item}
-                  onClick={(e) => handleMenuItemClick(e, 'not_interested', item)}
-                >
-                  <span>Не интересно</span>
+                      
+                    
+                  </Link>
                 </div>
               </div>
             )}
@@ -132,4 +100,4 @@ const Recommended = ({ categoryId }) => {
   )
 }
 
-export default Recommended
+export default memo(Recommended)

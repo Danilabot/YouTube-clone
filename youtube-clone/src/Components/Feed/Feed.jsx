@@ -42,7 +42,7 @@ const Feed = ({ data }) => {
   )
 
   return (
-    <div className="feed">
+    <div >
       <WindowScroller>
         {({ height, scrollTop }) => (
           <AutoSizer disableHeight>

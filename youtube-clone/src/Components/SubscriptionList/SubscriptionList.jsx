@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../context/AuthProvider'
 import { API_KEY } from '../../utils/data'
 import styles from './SubscriptionList.module.css'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../../redux/hooks'
+
 export const SubscriptionList = () => {
-  const { user } = useAuth()
+  const user = useAppSelector(state => state.auth.user)
   const [subscriptions, setSubscriptions] = useState([])
   const [loading, setLoading] = useState(true)
   const [channelsInfo,setChannelsInfo]=useState([])

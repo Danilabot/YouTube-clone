@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../context/AuthProvider'
 import styles from './SubscribeButton.module.css'
+import { useAppSelector } from '../../redux/hooks'
 
 export const SubscribeButton = ({ channelId }) => {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { user } = useAuth()
+  const user = useAppSelector(state => state.auth.user)
 
-  // Получаем токен в начале компонента
+  // Получаю токен в начале компонента
   const token = localStorage.getItem('token')
 
-  console.log('Token из user:', user?.token)
-  console.log('Token из localStorage:', token)
 
   const checkSubscription = () => {
     if (!user) return
-    
+
     fetch(`http://localhost:5000/api/subscriptions/status/${channelId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,7 +21,7 @@ export const SubscribeButton = ({ channelId }) => {
     })
       .then((res) => res.json())
       .then((data) => setIsSubscribed(data.isSubscribed))
-      .catch(error => console.error('Ошибка проверки подписки:', error))
+      .catch((error) => console.error('Ошибка проверки подписки:', error))
   }
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export const SubscribeButton = ({ channelId }) => {
   const handleSubscribe = () => {
     setLoading(true)
 
-    if (!user) {
+    if (!user || !token) {
       alert('Нет авторизации')
       setLoading(false)
       return
@@ -45,7 +43,7 @@ export const SubscribeButton = ({ channelId }) => {
     fetch(url, {
       method: isSubscribed ? 'DELETE' : 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,  // ← теперь token доступен!
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     })
@@ -56,7 +54,7 @@ export const SubscribeButton = ({ channelId }) => {
         }
         return res.json()
       })
-      .then((data) => {
+      .then(() => {
         setIsSubscribed(!isSubscribed)
       })
       .catch((error) => {

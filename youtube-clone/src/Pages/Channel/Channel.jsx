@@ -4,6 +4,7 @@ import { API_KEY } from '../../utils/data'
 import { value_converter } from '../../utils/data'
 import styles from './Channel.module.css'
 import { SubscribeButton } from '../../Components/SubscribeButton/SubscribeButton'
+import { Link } from 'react-router-dom'
 const Channel = () => {
   const { channelId } = useParams()
 
@@ -32,7 +33,7 @@ const Channel = () => {
         const searchResponse = await fetch(searchUrl)
         const searchData = await searchResponse.json()
 
-        // Получаем детали видео (статистику, длительность)
+        // Получаю детали видео (статистику, длительность)
         const videoIds = searchData.items
           .map((item) => item.id.videoId)
           .join(',')
@@ -56,7 +57,6 @@ const Channel = () => {
   if (!channelInfo) return <div className={styles.error}>Канал не найден</div>
 
   const { snippet, statistics } = channelInfo
-
   return (
     <div className={styles.channel_page}>
       {/* ШАПКА КАНАЛА */}
@@ -100,7 +100,6 @@ const Channel = () => {
           </div>
 
           {/* Кнопка подписки */}
-          <button channelId={channelId} />
         </div>
       </div>
 
@@ -126,11 +125,13 @@ const Channel = () => {
             
           <div className={styles.videos_grid}>
             {channelVideos.map((video) => (
-              <div key={video.id} className={styles.video_card}>
+               <Link key={video.id} to={`/video/${video.snippet.categoryId}/${video.id}`}>
+              <div  className={styles.video_card}>
                 <img src={video.snippet.thumbnails.medium.url} />
                 <h4>{video.snippet.title}</h4>
                 <p>{value_converter(video.statistics.viewCount)} просмотров</p>
               </div>
+              </Link>
             ))}
           </div>
         )}

@@ -1,5 +1,6 @@
 .recommended {
   flex-basis: 22%;
+  background: var(--bg-color);
 }
 
 .side_video_list {
@@ -9,8 +10,8 @@
   text-decoration: none;
   color: inherit;
   min-height: 94px;
-  position: relative; /* Для позиционирования меню */
-  padding-right: 30px; /* Место для трех точек */
+  position: relative;
+  padding-right: 30px;
 }
 
 .thumbnail_container {
@@ -56,27 +57,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #606060;
-  opacity: 1; /* ВРЕМЕННО - всегда видна */
+  color: var(--text-secondary);
   z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
 }
 
 .side_video_list:hover .menu_button {
-  opacity: 1; /* Показываем при наведении на карточку */
+  opacity: 1;
 }
 
 .menu_button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #0f0f0f;
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
-/* ТРИ ТОЧКИ (через CSS) */
 .menu_button::before {
   content: '•••';
   font-size: 12px;
   letter-spacing: 2px;
   line-height: 1;
-  transform: rotate(90deg); /* Поворачиваем точки вертикально */
+  transform: rotate(90deg);
   display: block;
 }
 
@@ -85,21 +86,18 @@
   position: absolute;
   right: 0;
   top: 28px;
-  background: rgb(255, 255, 251); /* ВРЕМЕННО - яркий фон */
+  background: var(--bg-secondary);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   min-width: 180px;
   z-index: 100;
-}
-
-.dropdown_menu.show {
-  display: block;
+  border: 1px solid var(--border-color);
 }
 
 .dropdown_item {
   padding: 12px 16px;
   font-size: 14px;
-  color: #0f0f0f;
+  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -108,20 +106,13 @@
 }
 
 .dropdown_item:hover {
-  background-color: #f2f2f2;
+  background-color: var(--hover-bg);
 }
 
-.dropdown_item svg {
-  width: 20px;
-  height: 20px;
-  fill: #606060;
-}
-
-/* Иконки для меню (через Unicode символы) */
-.dropdown_item span:first-child {
-  font-size: 18px;
-  width: 24px;
-  text-align: center;
+.dropdown_item a {
+  color: var(--text-primary);
+  text-decoration: none;
+  width: 100%;
 }
 
 .vid_info {
@@ -139,7 +130,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
-  max-height: 2.8em;
+  color: var(--text-primary);
 }
 
 .vid_info p {
@@ -148,10 +139,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.vid_info p:last-child {
-  margin-bottom: 0;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 900px) {
@@ -161,7 +149,7 @@
   
   .side_video_list {
     min-height: auto;
-    padding-right: 24px; /* Поменьше на мобилках */
+    padding-right: 24px;
   }
   
   .thumbnail_container {
@@ -173,6 +161,6 @@
   }
   
   .menu_button {
-    opacity: 1; /* Всегда показываем на мобилках */
+    opacity: 1;
   }
 }

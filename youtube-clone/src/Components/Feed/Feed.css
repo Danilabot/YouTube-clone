@@ -1,36 +1,42 @@
-.feed{
-    margin-top: 15px;
+.feed {
+  margin-top: 15px;
 }
-.card:hover{
+
+.card:hover {
   transition: transform 0.8s, background-color 0.8s;
   border-radius: 20px;
-  background-color: rgba(134, 130, 130, 0.356);
+  background-color: var(--hover-bg);
 }
-.card img{
-    width: 100%;
-    border-radius: 23px;
+
+.card img {
+  width: 100%;
+  border-radius: 23px;
 }
-.card h2{
-    font-size: 18px;
-    font-weight: 600;
-    color: #000;
-    margin: 5px 0;
+
+.card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 5px 0;
 }
-.card h3{
-    font-size: 15px;
-    font-weight: 600;
-    color: #555;
-    margin: 6px 0;
+
+.card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 6px 0;
 }
-.card p{
-    font-size: 13px;
+
+.card p {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 @media (max-width:900px) {
-    .feed{
-        padding-left: 5%;
-        padding-right: 5%;
-    }
+  .feed {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 }
 
 .thumbnail-wrapper {
@@ -59,9 +65,9 @@
   flex-shrink: 0;
 }
 
-.video-info{
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-top: 10px;
+.video-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 10px;
 }

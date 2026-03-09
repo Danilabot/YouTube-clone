@@ -1,10 +1,22 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import './Profile.css'
-import { AuthContext } from '../../context/context'
+import { logout } from '../../redux/slices/authSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { toggleTheme } from '../../redux/slices/themeSlice'
+import { Link } from 'react-router-dom'
+
 
 export const Profile = ({ isOpen, setModal, setIsOpen, setAuthMode }) => {
-  const { logout, user } = useContext(AuthContext)
+  const dispatch = useAppDispatch()
+  const isDark = useAppSelector((state) => state.theme.isDark)
+  const user = useAppSelector((state) => state.auth.user)
 
+  const handleLogout = () => {
+    dispatch(logout())
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setIsOpen(false)
+  }
   // Закрытие по ESC
   useEffect(() => {
     const handleEsc = (e) => {
@@ -15,6 +27,14 @@ export const Profile = ({ isOpen, setModal, setIsOpen, setAuthMode }) => {
     }
     return () => document.removeEventListener('keydown', handleEsc)
   }, [isOpen, setIsOpen])
+  useEffect(() => {
+     console.log('Theme changed:', isDark)
+  if (isDark) {
+    document.body.classList.add('dark')
+  } else {
+    document.body.classList.remove('dark')
+  }
+}, [isDark])
 
   // Закрытие при клике вне меню
   const handleBackdropClick = () => {
@@ -35,9 +55,8 @@ export const Profile = ({ isOpen, setModal, setIsOpen, setAuthMode }) => {
 
   return (
     <>
-      {/* Затемнение фона */}
-      <div 
-        className={`menu-backdrop ${isOpen ? 'active' : ''}`} 
+      <div
+        className={`menu-backdrop ${isOpen ? 'active' : ''}`}
         onClick={handleBackdropClick}
       />
 
@@ -56,19 +75,27 @@ export const Profile = ({ isOpen, setModal, setIsOpen, setAuthMode }) => {
           <li className="menu_item" onClick={openRegister}>
             <span>Регистрация</span>
           </li>
-
-          <div className="menu_divider" />
-
           <li className="menu_item">
-            <span>Настройки</span>
-          </li>
-          <li className="menu_item">
-            <span>Помощь</span>
+            <Link to={`/saved`}>
+            <span>Сохраненные видео</span>
+            </Link>
           </li>
 
           <div className="menu_divider" />
 
-          <li className="menu_item logout" onClick={logout}>
+          <li className="menu_item">
+            <div className="theme_toggle">
+              <span>Тёмная тема</span>
+              <button onClick={() => dispatch(toggleTheme())}>
+                {isDark ? 'Вкл' : 'Выкл'}
+              </button>
+            </div>
+          </li>
+       
+
+          <div className="menu_divider" />
+
+          <li className="menu_item logout" onClick={handleLogout}>
             <span>Выйти</span>
           </li>
         </ul>

@@ -1,5 +1,6 @@
 .play-video {
   flex-basis: 77%;
+  background: var(--bg-color);
 }
 .play-video iframe {
   width: 100%;
@@ -10,6 +11,7 @@
   margin-top: 10px;
   font-weight: 600;
   font-size: 22px;
+  color: var(--text-primary);
 }
 .play-video-info {
   display: flex;
@@ -18,7 +20,7 @@
   flex-wrap: wrap;
   margin-top: 10px;
   font-size: 14px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
 }
 .play-video-info img {
   width: 20px;
@@ -32,7 +34,7 @@
 .play-video hr {
   border: 0;
   height: 1px;
-  background: #ccc;
+  background: var(--border-color);
   margin: 10px 0;
 }
 .publisher {
@@ -52,16 +54,16 @@
   margin-right: 15px;
 }
 .publisher div p {
-  color: #000;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 18px;
 }
 .publisher div span {
   font-size: 13px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
 }
 .publisher button {
-  background: red;
+  background: #cc0000;  /* оставляем красный, он не зависит от темы */
   color: #fff;
   padding: 8px 30px;
   border: 0;
@@ -76,11 +78,11 @@
 .vid-description p {
   font-size: 14px;
   margin-bottom: 5px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
 }
 .vid-description h4 {
   font-size: 14px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
   margin-top: 15px;
 }
 .comment {
@@ -96,10 +98,11 @@
 .comment h3 {
   font-size: 14px;
   margin-bottom: 2px;
+  color: var(--text-primary);
 }
 .comment h3 span {
   font-size: 12px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
   font-weight: 500;
   margin-left: 8px;
 }
@@ -116,8 +119,9 @@
 }
 .comment-action span {
   margin-right: 20px;
-  color: #5a5a5a;
+  color: var(--text-secondary);
 }
+
 @media (max-width:900px) {
   .play-video{
     flex-basis: 100%;
@@ -134,22 +138,4 @@
     margin-right: 15px;
     margin-top: 15px;
   }
- 
 }
-/* ВРЕМЕННО - сделать кнопку яркой и видимой */
-/* .publisher button._subscribe_btn_1880y_1 {
-  background: red !important;
-  color: white !important;
-  padding: 15px 30px !important;
-  font-size: 20px !important;
-  border: 5px solid yellow !important;
-  border-radius: 10px !important;
-  font-weight: bold !important;
-  opacity: 1 !important;
-  display: inline-block !important;
-  width: auto !important;
-  height: auto !important;
-  position: relative !important;
-  z-index: 9999 !important;
-  margin: 10px !important;
-} */

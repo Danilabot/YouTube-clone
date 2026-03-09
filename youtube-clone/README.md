@@ -1,16 +1,122 @@
-# React + Vite
+# YouTube Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Полноценный клон YouTube с авторизацией, лайками, подписками и тёмной темой.
 
-Currently, two official plugins are available:
+## Стек технологий
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Frontend
+- React 18 + TypeScript
+- Redux Toolkit (управление состоянием)
+- React Router v6 (навигация)
+- CSS Modules + адаптивная верстка
+- react-virtualized (виртуальный скролл)
 
-## React Compiler
+### Backend
+- Node.js + Express
+- SQLite + Sequelize ORM
+- JWT аутентификация
+- REST API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### API
+- YouTube Data API v3
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Функциональность
+
+### Пользователи
+- Регистрация / Вход / Выход
+- Профиль пользователя
+
+### Взаимодействие с видео
+- Лайки / Дизлайки (с сохранением в БД)
+- Сохранение видео в "Сохранённые"
+- Просмотр сохранённых видео
+
+### Каналы
+- Страница канала с информацией
+- Подписка / Отписка на каналы
+- Список подписок в сайдбаре
+- Видео канала
+
+### Поиск
+- Поиск видео по названию
+- Результаты с пагинацией
+
+### Комментарии
+- Просмотр комментариев к видео
+- Лайки комментариев
+
+### Интерфейс
+- Адаптивный дизайн (десктоп / планшет / мобильный)
+- Тёмная / светлая тема (с сохранением в localStorage)
+- Скелетоны при загрузке
+- Виртуальный скролл для главной страницы
+
+### Оптимизация
+- React.memo для тяжёлых компонентов
+- useCallback / useMemo
+- Ленивая загрузка страниц (React.lazy)
+- Debounce для поиска
+
+---
+
+## Установка и запуск
+
+### 1. Клонировать репозиторий
+```bash
+git clone https://github.com/your-username/youtube-clone.git
+cd youtube-clone
+```
+
+### 2. Установить зависимости
+
+**Frontend:**
+```bash
+npm install
+```
+
+**Backend:**
+```bash
+cd auth-backend
+npm install
+```
+
+### 3. Настройка
+
+Создать файл `.env` в папке `auth-backend`:
+```
+JWT_SECRET=your_secret_key
+```
+
+### 4. Запуск
+
+**Backend:**
+```bash
+cd auth-backend
+npm run dev
+```
+
+**Frontend:**
+```bash
+npm run dev
+```
+
+---
+
+
+
+## Планы по развитию
+
+- RTK Query для кэширования запросов
+- Бесконечный скролл на главной
+- Загрузка видео на канал
+- Плейлисты
+- Уведомления (toast)
+
+---
+
+## Автор
+
+[Соловьёв Данила Дмитриевич]  
+GitHub: [ссылка]  
+Telegram: [danyrok]
