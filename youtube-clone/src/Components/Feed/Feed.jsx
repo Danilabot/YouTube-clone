@@ -4,9 +4,13 @@ import { useCallback } from 'react'
 import { Loader } from '../../UI/Loader/Loader'
 import GridCell from './GridCell'
 
-const CARD_HEIGHT = 403
 const COLUMN_GAP = 16
 const ROW_GAP = 30
+const getCardHeight = (width) => {
+  if(width <500) return  250 + ROW_GAP
+  if(width <900) return 300 + ROW_GAP
+  return 403 + ROW_GAP
+}
 
 // Гибридная логика колонок 
 const getColumnCount = (width) => {
@@ -62,7 +66,7 @@ const Feed = ({ data }) => {
                   columnCount={columnCount}
                   rowCount={rowCount}
                   columnWidth={columnWidth}
-                  rowHeight={CARD_HEIGHT + ROW_GAP}
+                  rowHeight={getCardHeight(width)}
                   cellRenderer={(props) =>
                     cellRenderer({ ...props, columnCount })
                   }

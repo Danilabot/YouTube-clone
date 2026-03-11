@@ -15,6 +15,7 @@ import { setCredentials } from './redux/slices/authSlice'
 import {SearchResults} from './Pages/SearchResults/SearchResults'
 import {SavedVideo} from './Pages/SavedVideos/SavedVideos'
 import {Toaster} from 'react-hot-toast'
+import {MobileNavbar} from './Components/MobileNavbar/MobileNavbar'
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -120,6 +121,7 @@ const App = () => {
               category={category}/>} />
         <Route path='/saved' element={<SavedVideo />} />
       </Routes>
+      <MobileNavbar />
     </div>
   )
 }
