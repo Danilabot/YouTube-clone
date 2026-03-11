@@ -10,7 +10,7 @@ import profile_icon from '../../assets/jack.png'
 import { Myinput } from '../../UI/input/Myinput'
 import { useState } from 'react'
 
-const Navbar = ({ setSidebar, filter, setFilter, isOpen, setIsOpen }) => {
+const Navbar = ({ setSidebar, isOpen, setIsOpen }) => {
   const [searchQuery,setSearchQuery] = useState('')
   const navigate = useNavigate()
 

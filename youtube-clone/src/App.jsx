@@ -16,18 +16,24 @@ import {SearchResults} from './Pages/SearchResults/SearchResults'
 import {SavedVideo} from './Pages/SavedVideos/SavedVideos'
 import {Toaster} from 'react-hot-toast'
 import {MobileNavbar} from './Components/MobileNavbar/MobileNavbar'
+import { fetchPopularVideos } from './api/videos'
+import { useQuery } from '@tanstack/react-query'
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [sidebar, setSidebar] = useState(true)
-  const [data, setData] = useState([])
   const [category, setCategory] = useState(0)
   const [filter, setFilter] = useState({ sort: '', query: '' })
-  const sortedAndSearchedPosts = useVideo(data, filter.sort, filter.query)
   const [modal, setModal] = useState(false)
   const [authMode, setAuthMode] = useState('login')
   const dispatch = useDispatch()
   const location = useLocation()
+
+  const {data:videos =[], isLoading, error} = useQuery({
+    queryKey: ['videos', category],
+    queryFn: () => fetchPopularVideos(category),
+    staleTime: 5 * 60 * 1000, // кэш на 5 минут
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -42,29 +48,6 @@ const App = () => {
       )
     }
   }, [dispatch])
-
-  const fetchData = async () => {
-    try {
-      let allVideos = []
-      let pageToken = ''
-      for (let i = 0; i < 2; i++) {
-        const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${category}&key=${API_KEY}${pageToken ? `&pageToken=${pageToken}` : ''}`
-        const res = await fetch(videoList_url)
-        const data = await res.json()
-        allVideos=[...allVideos,...data.items]
-        pageToken=data.nextPageToken
-
-        if(!pageToken) break
-      }
-      setData(allVideos)
-    } catch (error) {
-      console.error('Ошибка загрузки:', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [category])
 
   return (
     <div>
@@ -81,8 +64,6 @@ const App = () => {
       />
       <Navbar
         setSidebar={setSidebar}
-        filter={filter}
-        setFilter={setFilter}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
@@ -105,9 +86,9 @@ const App = () => {
           element={
             <Home
               sidebar={sidebar}
-              data={sortedAndSearchedPosts}
               setCategory={setCategory}
               category={category}
+              data={videos} 
             />
           }
         />
