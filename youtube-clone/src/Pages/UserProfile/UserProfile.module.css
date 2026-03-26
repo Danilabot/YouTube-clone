@@ -60,6 +60,12 @@
   opacity: 1;
 }
 
+@media (hover: none) {
+  .avatarOverlay {
+    opacity: 0.6;
+  }
+}
+
 .avatar {
   width: 72px;
   height: 72px;

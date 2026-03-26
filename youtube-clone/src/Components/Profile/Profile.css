@@ -116,12 +116,24 @@
   gap: 12px;
 }
 
+.menu_user_avatar_wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.menu_user_avatar_wrap:hover .menu_user_avatar_edit {
+  opacity: 1;
+}
+
 .menu_user_avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
 }
 
 .menu_user_avatar_placeholder {
@@ -135,7 +147,94 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+}
+
+.menu_user_avatar_edit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.crop_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crop_modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.crop_hint {
+  font-size: 14px;
+  color: #606060;
+  margin: 0;
+}
+
+.crop_circle {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  background: #000;
+  border: 3px solid #065fd4;
+}
+
+.crop_circle:active { cursor: grabbing; }
+
+.crop_img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.crop_actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.crop_cancel {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  color: #606060;
+}
+
+.crop_confirm {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 50px;
+  background: #0f0f0f;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .menu_user_name {
