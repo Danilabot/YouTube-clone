@@ -173,6 +173,8 @@ export const Profile = () => {
         </div>
       )}
 
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+
       <div
         className={`menu-backdrop ${isProfileMenuOpen ? 'active' : ''}`}
         onClick={() => dispatch(closeProfileMenu())}
@@ -181,7 +183,7 @@ export const Profile = () => {
       <nav className={`menu ${isProfileMenuOpen ? 'active' : ''}`}>
         {user && (
           <div className="menu_user">
-            <div className="menu_user_avatar_wrap" onClick={() => { fileInputRef.current?.click(); dispatch(closeProfileMenu()) }}>
+            <div className="menu_user_avatar_wrap" onClick={() => fileInputRef.current?.click()}>
               {user.avatar ? (
                 <img src={user.avatar} alt={user.name} className="menu_user_avatar" />
               ) : (
@@ -199,8 +201,6 @@ export const Profile = () => {
             </div>
           </div>
         )}
-
-        <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
 
         <ul className="menu_list">
           <li className="menu_item" onClick={() => dispatch(openAuthModal('login'))}>
