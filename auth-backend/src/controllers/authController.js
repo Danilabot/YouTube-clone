@@ -124,7 +124,7 @@ exports.getProfile = async (req, res) => {
 // Обновление профиля
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, avatar } = req.body;
     const userId = req.user.id;
     
     // Находим пользователя
@@ -153,6 +153,7 @@ exports.updateProfile = async (req, res) => {
     const updateData = {};
     if (name) updateData.name = name;
     if (email) updateData.email = email;
+    if (avatar !== undefined) updateData.avatar = avatar;
 
     await user.update(updateData);
 
