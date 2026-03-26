@@ -71,7 +71,11 @@ export const MobileNavbar = () => {
 
       <Link to="/profile" className={`${styles.item} ${active('/profile')}`}>
         {user ? (
-          <div className={styles.userAvatar}>{user.name.charAt(0).toUpperCase()}</div>
+          user.avatar ? (
+            <img src={user.avatar} alt={user.name} className={styles.userAvatarImg} />
+          ) : (
+            <div className={styles.userAvatar}>{user.name.charAt(0).toUpperCase()}</div>
+          )
         ) : (
           <ProfileIcon />
         )}

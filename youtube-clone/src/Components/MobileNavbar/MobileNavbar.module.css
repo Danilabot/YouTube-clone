@@ -89,3 +89,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.userAvatarImg {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}

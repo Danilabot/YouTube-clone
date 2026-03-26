@@ -42,7 +42,7 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date(),
-    database: 'SQLite'
+    database: 'PostgreSQL'
   });
 });
 

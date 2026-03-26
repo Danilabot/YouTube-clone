@@ -40,6 +40,10 @@ const User = sequelize.define('User', {
         msg: 'Password must be at least 6 characters'
       }
     }
+  },
+  avatar: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   // Хуки (обработчики событий)

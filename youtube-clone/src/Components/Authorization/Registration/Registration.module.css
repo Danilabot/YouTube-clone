@@ -18,6 +18,135 @@
   margin: 0 0 16px 0;
 }
 
+.avatarSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.avatarPreview {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px dashed #e5e5e5;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  transition: border-color 0.2s;
+}
+
+.avatarPreview:hover {
+  border-color: #065fd4;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #606060;
+}
+
+.avatarIcon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.avatarHint {
+  font-size: 11px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.cropOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cropModal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.cropHint {
+  font-size: 14px;
+  color: #606060;
+  margin: 0;
+}
+
+.cropCircle {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  background: #000;
+  border: 3px solid #065fd4;
+}
+
+.cropCircle:active {
+  cursor: grabbing;
+}
+
+.cropImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.cropActions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.cropCancel {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  color: #606060;
+}
+
+.cropConfirm {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 50px;
+  background: #0f0f0f;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
 .inputGroup {
   display: flex;
   flex-direction: column;

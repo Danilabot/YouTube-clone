@@ -39,8 +39,15 @@ export const Profile = () => {
       <nav className={`menu ${isProfileMenuOpen ? 'active' : ''}`}>
         {user && (
           <div className="menu_user">
-            <div className="menu_user_name">{user.name}</div>
-            <div className="menu_user_email">{user.email}</div>
+            {user.avatar ? (
+              <img src={user.avatar} alt={user.name} className="menu_user_avatar" />
+            ) : (
+              <div className="menu_user_avatar_placeholder">{user.name.charAt(0).toUpperCase()}</div>
+            )}
+            <div>
+              <div className="menu_user_name">{user.name}</div>
+              <div className="menu_user_email">{user.email}</div>
+            </div>
           </div>
         )}
 

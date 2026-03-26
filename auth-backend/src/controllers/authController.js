@@ -11,7 +11,7 @@ const generateToken = (id) => {
 // Регистрация пользователя
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, avatar } = req.body;
 
     // Проверяем совпадение паролей
     if (password !== confirmPassword) {
@@ -32,7 +32,8 @@ exports.register = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password // Пароль автоматически хешируется в хуке beforeCreate
+      password,
+      avatar: avatar || null
     });
 
     // Генерируем токен

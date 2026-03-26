@@ -21,6 +21,7 @@ const Navbar = ({ setSidebar }: NavbarProps) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const isProfileMenuOpen = useAppSelector((state) => state.ui.isProfileMenuOpen)
+  const user = useAppSelector((state) => state.auth.user)
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -64,12 +65,21 @@ const Navbar = ({ setSidebar }: NavbarProps) => {
         <img src={upload_icon} alt="" />
         <img src={more_icon} alt="" />
         <img src={notification_icon} alt="" />
-        <img
-          src={profile_icon}
-          className="user-icon"
-          alt=""
-          onClick={handleProfileClick}
-        />
+        {user?.avatar ? (
+          <img
+            src={user.avatar}
+            className="user-icon"
+            alt=""
+            onClick={handleProfileClick}
+          />
+        ) : (
+          <img
+            src={profile_icon}
+            className="user-icon"
+            alt=""
+            onClick={handleProfileClick}
+          />
+        )}
       </div>
     </nav>
   )

@@ -32,3 +32,4 @@ __pycache__/
 *.swo
 *~
 .DS_Store
+.vercel
