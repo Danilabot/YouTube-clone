@@ -22,6 +22,11 @@ export const fetchPopularVideosByCategory = async (categoryId: number): Promise<
     if (!pageToken) break
   }
 
+  for (let i = allVideos.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allVideos[i], allVideos[j]] = [allVideos[j], allVideos[i]]
+  }
+
   return allVideos
 }
 

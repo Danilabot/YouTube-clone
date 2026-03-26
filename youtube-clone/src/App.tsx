@@ -41,7 +41,7 @@ const App = () => {
   const { data: videos = [] } = useQuery<YouTubeVideo[]>({
     queryKey: ['videos', category],
     queryFn: () => fetchPopularVideosByCategory(category),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   })
 
   const { data: shortsData } = useQuery({
