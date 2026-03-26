@@ -1,39 +1,61 @@
-const API_URL = 'http://localhost:5000/api/saved';
+import { API_BASE_URL } from './config'
+import { getToken } from '../utils/auth'
+import type { YouTubeVideo } from '../types/youtube'
 
-export const saveVideo = async (videoId:string, videoData?:any) =>{
-    const res = await fetch(`${API_URL}/${videoId}`, {
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({videoData})
-    })
-    return res.json()  // { success: true, saved: true }
+const API_URL = `${API_BASE_URL}/api/saved`
+
+export interface SavedVideoRecord {
+  videoId: string
+  videoData?: YouTubeVideo
+  createdAt?: string
 }
-export const unsaveVideo = async (videoId: string) => {
+
+export interface SaveResponse {
+  success: boolean
+  saved: boolean
+}
+
+export interface SavedVideosResponse {
+  success: boolean
+  savedVideos: SavedVideoRecord[]
+}
+
+export const saveVideo = async (videoId: string, videoData?: YouTubeVideo): Promise<SaveResponse> => {
+  const res = await fetch(`${API_URL}/${videoId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify({ videoData }),
+  })
+  return res.json()
+}
+
+export const unsaveVideo = async (videoId: string): Promise<SaveResponse> => {
   const res = await fetch(`${API_URL}/${videoId}`, {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
-  });
-  return res.json(); // { success: true, saved: false }
-};
-export const getSavedVideos = async () => {
+  })
+  return res.json()
+}
+
+export const getSavedVideos = async (): Promise<SavedVideosResponse> => {
   const res = await fetch(`${API_URL}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
-  });
-  return res.json(); // { success: true, savedVideos: [] }
-};
+  })
+  return res.json()
+}
 
-export const getSaveStatus = async (videoId: string) => {
+export const getSaveStatus = async (videoId: string): Promise<SaveResponse> => {
   const res = await fetch(`${API_URL}/${videoId}/status`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
-  });
-  return res.json(); // { success: true, saved: boolean }
-};
+  })
+  return res.json()
+}

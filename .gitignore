@@ -14,6 +14,11 @@ yarn-error.log*
 logs/
 *.log
 
+# База данных
+*.sqlite
+*.sqlite3
+*.db
+
 # Директории сборки
 dist/
 build/

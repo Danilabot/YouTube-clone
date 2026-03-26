@@ -1,10 +1,16 @@
 const { Sequelize } = require('sequelize');
 const path = require('path');
 
+// На Vercel файловая система read-only, пишем в /tmp
+const isVercel = process.env.VERCEL === '1';
+const dbPath = isVercel
+  ? '/tmp/database.sqlite'
+  : path.join(__dirname, '../../database.sqlite');
+
 // Создаем подключение к SQLite
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(__dirname, '../../database.sqlite'), // файл базы данных
+  storage: dbPath,
   logging: process.env.NODE_ENV === 'development' ? console.log : false,
   define: {
     timestamps: true, // автоматически добавляет createdAt и updatedAt

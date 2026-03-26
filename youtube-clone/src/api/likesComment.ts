@@ -1,4 +1,7 @@
-const API_URL = 'http://localhost:5000/api/comments';
+import { API_BASE_URL } from './config';
+import { getToken } from '../utils/auth';
+
+const API_URL = `${API_BASE_URL}/api/comments`;
 
 interface LikesResponse {
     likes:number
@@ -15,7 +18,7 @@ export const getLikesCount = async (commentId:string):Promise<LikesResponse> => 
 export const getLikeStatus = async (commentId:string):Promise<LikeStatusResponse> => {
   const res = await fetch(`${API_URL}/${commentId}/like-status`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return res.json(); // { liked: true/false }
@@ -25,7 +28,7 @@ export const toggleLike = async (commentId:string): Promise<LikeStatusResponse> 
   const res = await fetch(`${API_URL}/${commentId}/like`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return res.json(); // { liked: true/false }

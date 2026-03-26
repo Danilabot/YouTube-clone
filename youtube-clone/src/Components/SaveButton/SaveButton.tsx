@@ -3,16 +3,19 @@ import { unsaveVideo, saveVideo, getSaveStatus } from '../../api/saved'
 import save from '../../assets/save.png'
 import toast from 'react-hot-toast'
 import styles from './SaveButton.module.css'
-interface saveProps {
+import { getToken } from '../../utils/auth'
+import type { YouTubeVideo } from '../../types/youtube'
+
+interface SaveButtonProps {
   videoId: string
-  videoData?: any
+  videoData?: YouTubeVideo
 }
 
-export const SaveButton = ({ videoId, videoData }: saveProps) => {
+export const SaveButton = ({ videoId, videoData }: SaveButtonProps) => {
   const [isSaved, setIsSaved] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  let token = localStorage.getItem('token')
+  const token = getToken()
   useEffect(() => {
     if (token) {
       const loadSave = async () => {

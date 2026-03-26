@@ -1,6 +1,7 @@
 import like from '../../../assets/like.png'
 import { useState, useEffect } from 'react'
 import { getLikesCount, getLikeStatus, toggleLike } from '../../../api/likesComment'
+import { getToken } from '../../../utils/auth'
 
 interface LikeCommentProps {
   commentId: string
@@ -18,7 +19,7 @@ export const LikeComment = ({ initialLikes, commentId }: LikeCommentProps) => {
       setLikeCount(countRes.likes)
 
       // Загружаю статус, если есть токен
-      if (localStorage.getItem('token')) {
+      if (getToken()) {
         const statusRes = await getLikeStatus(commentId)
         setLiked(statusRes.liked)
       }
@@ -27,7 +28,7 @@ export const LikeComment = ({ initialLikes, commentId }: LikeCommentProps) => {
   }, [commentId])
 
   const handleLike = async () => {
-    if (!localStorage.getItem('token')) {
+    if (!getToken()) {
       alert('Войдите чтобы ставить лайки')
       return
     }

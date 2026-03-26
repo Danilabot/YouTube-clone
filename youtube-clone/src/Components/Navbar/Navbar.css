@@ -73,3 +73,10 @@ nav{
         width: auto;
     }
 }
+
+@media(max-width:425px){
+    nav {
+        padding-left: 8px;
+        padding-right: 0;
+    }
+}

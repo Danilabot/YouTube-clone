@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const { connectDB } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const likeRoutes = require('./routes/likeRoutes')
 const dislikeRoutes = require('./routes/dislikeRoutes')
@@ -11,10 +12,19 @@ const savedVideoRoutes = require('./routes/savedVideoRoutes')
 
 const app = express();
 
+// На Vercel инициализируем БД при первом запросе (server.js не запускается)
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+  if (!dbInitialized) {
+    await connectDB();
+    dbInitialized = true;
+  }
+  next();
+});
+
 // Middleware
 app.use(cors({
   origin: '*',
-  
   credentials: true
 }));
 app.use(express.json());

@@ -1,27 +1,91 @@
-.mobile-navbar {
+.navbar {
   display: none;
   position: fixed;
-  bottom: 0;          /* прижать к низу */
+  bottom: 0;
+  top: auto;
   left: 0;
   right: 0;
-  top: auto;          /* убрать привязку к верху */
-  height: 60px;       /* задай высоту */
-  background: var(--mob-nav);    /* пока оставь для проверки */
-  justify-content: space-around;
+  height: 64px;
+  background: var(--bg-color);
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  z-index: 999;
   align-items: center;
-  z-index: 1000;
-  border-top: 4px solid rgba(255, 0, 0, 0.486);
-  
-}
-.mobile-navbar img{
-    max-width: 40px;
-    padding: 5px;
-    border-radius: 5px;
-    filter: var(--icon-filter);
+  justify-content: space-around;
+  padding: 0 4px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 768px) {
-  .mobile-navbar {
-    display: flex;  /* показать на мобилках */
+  .navbar {
+    display: flex;
   }
+}
+
+/* Обычный пункт навигации */
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 12px;
+  transition: color 0.2s;
+  flex: 1;
+}
+
+.item svg {
+  transition: transform 0.2s;
+}
+
+.item:active svg {
+  transform: scale(0.9);
+}
+
+.item.active {
+  color: var(--text-primary);
+}
+
+.item.active svg {
+  color: #ff0000;
+}
+
+/* Кнопка "+" по центру */
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #ff0000;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+}
+
+.addBtn:active {
+  transform: scale(0.94);
+  background: #cc0000;
+}
+
+/* Аватар авторизованного пользователя */
+.userAvatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #065fd4;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

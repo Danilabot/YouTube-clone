@@ -20,6 +20,15 @@
         padding-right: 5%;
     }
 }
+
+@media (max-width: 425px) {
+    .large-container, .container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        overflow-x: hidden;
+        width: 100%;
+    }
+}
 @media (max-width: 900px) {
   .feed {
     grid-template-columns: repeat(2, 1fr);  
