@@ -2,7 +2,6 @@ import dislike from '../../../assets/dislike.png'
 import './Dislike.css'
 
 interface DislikeProps {
-  dislikes: number
   disliked: boolean
   onDislike: () => void
 }

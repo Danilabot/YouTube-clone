@@ -5,12 +5,6 @@ import styles from './SearchResults.module.css'
 import { searchVideos } from '../../api/youtube'
 import type { YouTubeSearchResult, YouTubeVideo } from '../../types/youtube'
 
-interface SearchResultsProps {
-  sidebar: boolean
-  setCategory: (category: number) => void
-  category: number
-}
-
 // Адаптирует YouTubeSearchResult (из /search) к формату YouTubeVideo для GridCell
 const adaptSearchResult = (item: YouTubeSearchResult): YouTubeVideo => ({
   kind: 'youtube#video',
@@ -25,7 +19,7 @@ const adaptSearchResult = (item: YouTubeSearchResult): YouTubeVideo => ({
   contentDetails: { duration: 'PT0S' },
 })
 
-export const SearchResults = ({ sidebar: _sidebar, setCategory: _setCategory, category: _category }: SearchResultsProps) => {
+export const SearchResults = () => {
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
   const [videos, setVideos] = useState<YouTubeSearchResult[]>([])

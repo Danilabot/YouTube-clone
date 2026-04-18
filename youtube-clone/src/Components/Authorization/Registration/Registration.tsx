@@ -113,7 +113,8 @@ function Register({ onSuccess }: RegisterProps) {
     const canvas = document.createElement('canvas')
     canvas.width = CROP_SIZE
     canvas.height = CROP_SIZE
-    const ctx = canvas.getContext('2d')!
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
     ctx.beginPath()
     ctx.arc(CROP_SIZE / 2, CROP_SIZE / 2, CROP_SIZE / 2, 0, Math.PI * 2)
     ctx.clip()
@@ -132,7 +133,7 @@ function Register({ onSuccess }: RegisterProps) {
 
   const validateForm = (): string | null => {
     if (!name.trim()) return 'Имя обязательно'
-    if (!email.includes('@')) return 'Введите корректный email'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Введите корректный email'
     if (password.length < 6) return 'Пароль должен быть не менее 6 символов'
     if (password !== confirmPassword) return 'Пароли не совпадают'
     return null

@@ -9,13 +9,12 @@ interface VideoMetaProps {
   videoData: YouTubeVideo
   likes: number
   liked: boolean
-  dislikes: number
   disliked: boolean
   onLike: () => void
   onDislike: () => void
 }
 
-const VideoMeta = ({ videoData, likes, liked, dislikes, disliked, onLike, onDislike }: VideoMetaProps) => (
+const VideoMeta = ({ videoData, likes, liked, disliked, onLike, onDislike }: VideoMetaProps) => (
   <>
     <h3>{videoData.snippet.title}</h3>
     <div className="play-video-info">
@@ -32,7 +31,7 @@ const VideoMeta = ({ videoData, likes, liked, dislikes, disliked, onLike, onDisl
           />
         </span>
         <span>
-          <Dislike dislikes={dislikes} disliked={disliked} onDislike={onDislike} />
+          <Dislike disliked={disliked} onDislike={onDislike} />
         </span>
         <span>
           <SaveButton videoId={videoData.id} videoData={videoData} />

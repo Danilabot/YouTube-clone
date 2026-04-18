@@ -13,12 +13,11 @@ interface PlayVideoProps {
   likes: number
   liked: boolean
   handleLike: () => void
-  dislikes: number
   disliked: boolean
   handleDislike: () => void
 }
 
-const PlayVideo = ({ likes, liked, handleLike, dislikes, disliked, handleDislike }: PlayVideoProps) => {
+const PlayVideo = ({ likes, liked, handleLike, disliked, handleDislike }: PlayVideoProps) => {
   const { videoId } = useParams<{ videoId: string }>()
 
   const { data: videoData } = useVideoData(videoId ?? '')
@@ -42,7 +41,6 @@ const PlayVideo = ({ likes, liked, handleLike, dislikes, disliked, handleDislike
         videoData={videoData}
         likes={likes}
         liked={liked}
-        dislikes={dislikes}
         disliked={disliked}
         onLike={handleLike}
         onDislike={handleDislike}

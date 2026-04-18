@@ -70,7 +70,6 @@ const Video = () => {
       if (res.disliked && liked) {
         setLiked(false)
         setLikes((prev) => prev - 1)
-        await toggleLike(videoId)
       }
     } catch (err) {
       console.error(err)
@@ -83,7 +82,6 @@ const Video = () => {
         likes={likes}
         liked={liked}
         handleLike={handleLike}
-        dislikes={dislikes}
         disliked={disliked}
         handleDislike={handleDislike}
       />

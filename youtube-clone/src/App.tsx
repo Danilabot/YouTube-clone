@@ -41,7 +41,7 @@ const App = () => {
   const { data: videos = [] } = useQuery<YouTubeVideo[]>({
     queryKey: ['videos', category],
     queryFn: () => fetchPopularVideosByCategory(category),
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
   })
 
   const { data: shortsData } = useQuery({
@@ -103,11 +103,7 @@ const App = () => {
         <Route
           path="/search"
           element={
-            <SearchResults
-              sidebar={sidebar}
-              setCategory={setCategory}
-              category={category}
-            />
+            <SearchResults />
           }
         />
         <Route path="/saved" element={<SavedVideo />} />
