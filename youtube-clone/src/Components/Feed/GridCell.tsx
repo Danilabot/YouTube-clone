@@ -1,5 +1,5 @@
 import './Feed.css'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { formatDuration } from '../../utils/formatDuration'
@@ -16,16 +16,19 @@ const GridCell = memo(({ item }: GridCellProps) => {
   const dispatch = useAppDispatch()
   const channelId = item.snippet.channelId
   const channelLogo = useAppSelector((state) => state.channels.logos[channelId] ?? null)
+  const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
     dispatch(fetchChannelLogo(channelId))
   }, [channelId, dispatch])
 
+  if (hidden) return null
+
   return (
     <div className="card">
       <Link to={`/video/${item.snippet.categoryId}/${item.id}`}>
         <div className="thumbnail-wrapper">
-          <img src={item.snippet.thumbnails.medium?.url} alt={item.snippet.title} />
+          <img src={item.snippet.thumbnails.medium?.url} alt={item.snippet.title} onError={() => setHidden(true)} />
           <div
             className="duration"
             style={{
