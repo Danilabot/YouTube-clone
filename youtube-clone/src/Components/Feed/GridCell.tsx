@@ -17,20 +17,26 @@ const GridCell = memo(({ item }: GridCellProps) => {
   const channelId = item.snippet.channelId
   const channelLogo = useAppSelector((state) => state.channels.logos[channelId] ?? null)
   const thumbnailUrl = item.snippet.thumbnails.medium?.url
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [hidden, setHidden] = useState(false)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     dispatch(fetchChannelLogo(channelId))
   }, [channelId, dispatch])
 
-  if (hidden || !thumbnailUrl) return null
+  useEffect(() => {
+    if (!thumbnailUrl) return
+    const img = new Image()
+    img.onload = () => setReady(true)
+    img.src = thumbnailUrl
+  }, [thumbnailUrl])
+
+  if (!ready || !thumbnailUrl) return null
 
   return (
-    <div className="card" style={{ opacity: imageLoaded ? 1 : 0 }}>
+    <div className="card">
       <Link to={`/video/${item.snippet.categoryId}/${item.id}`}>
         <div className="thumbnail-wrapper">
-          <img src={thumbnailUrl} alt={item.snippet.title} onLoad={() => setImageLoaded(true)} onError={() => setHidden(true)} />
+          <img src={thumbnailUrl} alt={item.snippet.title} />
           <div
             className="duration"
             style={{
