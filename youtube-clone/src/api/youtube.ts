@@ -9,15 +9,24 @@ import type {
 
 const BASE = 'https://youtube.googleapis.com/youtube/v3'
 
+const isVideoAvailable = (v: YouTubeVideo) =>
+  !!v.snippet?.thumbnails?.medium?.url &&
+  !!v.statistics?.viewCount &&
+  Number(v.statistics.viewCount) > 0 &&
+  !!v.contentDetails?.duration &&
+  v.contentDetails.duration !== 'P0D' &&
+  v.contentDetails.duration !== 'PT0S'
+
 export const fetchPopularVideosByCategory = async (categoryId: number): Promise<YouTubeVideo[]> => {
   let allVideos: YouTubeVideo[] = []
   let pageToken = ''
 
   for (let i = 0; i < 2; i++) {
-    const url = `${BASE}/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${categoryId}&key=${API_KEY}${pageToken ? `&pageToken=${pageToken}` : ''}`
+    const url = `${BASE}/videos?part=snippet%2CcontentDetails%2Cstatistics%2Cstatus&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${categoryId}&key=${API_KEY}${pageToken ? `&pageToken=${pageToken}` : ''}`
     const res = await fetch(url)
     const data: { items: YouTubeVideo[]; nextPageToken?: string } = await res.json()
-    allVideos = [...allVideos, ...data.items]
+    const available = (data.items ?? []).filter(isVideoAvailable)
+    allVideos = [...allVideos, ...available]
     pageToken = data.nextPageToken ?? ''
     if (!pageToken) break
   }

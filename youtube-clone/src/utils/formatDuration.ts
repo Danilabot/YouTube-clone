@@ -1,3 +1,12 @@
+export const parseDurationToSeconds = (isoDuration: string | undefined): number => {
+  if (!isoDuration) return 0
+  const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+  if (!match) return 0
+  return (parseInt(match[1] ?? '0') || 0) * 3600
+    + (parseInt(match[2] ?? '0') || 0) * 60
+    + (parseInt(match[3] ?? '0') || 0)
+}
+
 export const formatDuration = (isoDuration: string | undefined): string => {
   if (!isoDuration) return '0:00'
 

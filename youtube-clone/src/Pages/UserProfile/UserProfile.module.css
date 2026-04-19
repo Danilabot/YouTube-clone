@@ -338,3 +338,110 @@
 .channelAvatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
 .channelName { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 0 0 2px; }
 .channelSubs { font-size: 13px; color: var(--text-secondary); margin: 0; }
+
+/* Мои видео */
+.myVideosHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.uploadBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #065fd4;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.uploadBtn:hover {
+  background: #0356c0;
+}
+
+.uploadPrompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 60px 0;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.uploadPrompt p {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.uploadPrompt span {
+  font-size: 14px;
+}
+
+.myVideoCard {
+  position: relative;
+}
+
+.myVideoCard > a {
+  text-decoration: none;
+  display: block;
+}
+
+.myVideoThumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 8px;
+}
+
+.myVideoThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noThumb {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: rgba(255,255,255,0.5);
+}
+
+.deleteVideoBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.myVideoCard:hover .deleteVideoBtn {
+  display: flex;
+}
+
+.deleteVideoBtn:hover {
+  background: #cc0000;
+}

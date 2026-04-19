@@ -11,12 +11,15 @@ import Channel from './Pages/Channel/Channel'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './redux/slices/authSlice'
 import { useAppSelector } from './redux/hooks'
-import { closeAuthModal } from './redux/slices/uiSlice'
+import { closeAuthModal, closeUploadModal } from './redux/slices/uiSlice'
+import { UploadVideo } from './Components/UploadVideo/UploadVideo'
+import { MiniPlayer } from './Components/MiniPlayer/MiniPlayer'
 import { SearchResults } from './Pages/SearchResults/SearchResults'
 import { SavedVideo } from './Pages/SavedVideos/SavedVideos'
 import { History } from './Pages/History/History'
 import { UserProfile } from './Pages/UserProfile/UserProfile'
 import ShortsPage from './Pages/Shorts/ShortsPage'
+import UserVideoPage from './Pages/UserVideoPage/UserVideoPage'
 import { Toaster } from 'react-hot-toast'
 import { MobileNavbar } from './Components/MobileNavbar/MobileNavbar'
 import { fetchPopularVideosByCategory, fetchShorts } from './api/youtube'
@@ -33,6 +36,7 @@ const App = () => {
   const isAuthModalOpen = useAppSelector((state) => state.ui.isAuthModalOpen)
   const authMode = useAppSelector((state) => state.ui.authMode)
   const isDark = useAppSelector((state) => state.theme.isDark)
+  const isUploadModalOpen = useAppSelector((state) => state.ui.isUploadModalOpen)
 
   useEffect(() => {
     document.body.classList.toggle('dark', isDark)
@@ -85,6 +89,12 @@ const App = () => {
           <Register onSuccess={() => dispatch(closeAuthModal())} />
         )}
       </MyModal>
+      <MyModal visible={isUploadModalOpen} setVisible={() => dispatch(closeUploadModal())} wide>
+        <UploadVideo
+          onSuccess={() => dispatch(closeUploadModal())}
+          onCancel={() => dispatch(closeUploadModal())}
+        />
+      </MyModal>
       <Routes>
         <Route
           path="/"
@@ -110,8 +120,10 @@ const App = () => {
         <Route path="/history" element={<History />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/shorts" element={<ShortsPage />} />
+        <Route path="/user-video/:id" element={<UserVideoPage />} />
       </Routes>
       <MobileNavbar />
+      <MiniPlayer />
     </div>
   )
 }

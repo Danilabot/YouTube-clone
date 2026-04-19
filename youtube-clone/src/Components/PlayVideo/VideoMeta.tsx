@@ -19,7 +19,7 @@ const VideoMeta = ({ videoData, likes, liked, disliked, onLike, onDislike }: Vid
     <h3>{videoData.snippet.title}</h3>
     <div className="play-video-info">
       <p>
-        {formatNumber(videoData.statistics.viewCount)} Views &bull;{' '}
+        {formatNumber(videoData.statistics.viewCount)} просмотров &bull;{' '}
         {formatDistanceToNow(new Date(videoData.snippet.publishedAt), { addSuffix: true })}
       </p>
       <div>

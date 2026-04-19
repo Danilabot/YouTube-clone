@@ -25,15 +25,15 @@ interface SidebarLink {
 }
 
 const SIDEBAR_LINKS: SidebarLink[] = [
-  { icon: home, label: 'Home', categoryId: 0 },
-  { icon: game_icon, label: 'Gaming', categoryId: 20 },
-  { icon: automobiles, label: 'Automobiles', categoryId: 2 },
-  { icon: sports, label: 'Sports', categoryId: 17 },
-  { icon: entertainment, label: 'Entertainment', categoryId: 24 },
-  { icon: tech, label: 'Technology', categoryId: 28 },
-  { icon: music, label: 'Music', categoryId: 10 },
-  { icon: blogs, label: 'Blogs', categoryId: 22 },
-  { icon: news, label: 'News', categoryId: 25 },
+  { icon: home, label: 'Главная', categoryId: 0 },
+  { icon: game_icon, label: 'Игры', categoryId: 20 },
+  { icon: automobiles, label: 'Авто', categoryId: 2 },
+  { icon: sports, label: 'Спорт', categoryId: 17 },
+  { icon: entertainment, label: 'Развлечения', categoryId: 24 },
+  { icon: tech, label: 'Технологии', categoryId: 28 },
+  { icon: music, label: 'Музыка', categoryId: 10 },
+  { icon: blogs, label: 'Блоги', categoryId: 22 },
+  { icon: news, label: 'Новости', categoryId: 25 },
 ]
 
 const Sidebar = ({ sidebar, category, setCategory }: SidebarProps) => {
@@ -57,7 +57,7 @@ const Sidebar = ({ sidebar, category, setCategory }: SidebarProps) => {
         <hr />
       </div>
       <div className="subscribed-list">
-        <h3>Subscribed</h3>
+        <h3>Подписки</h3>
         <div className="side-link">
           <SubscriptionList />
         </div>

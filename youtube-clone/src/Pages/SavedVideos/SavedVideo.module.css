@@ -1,51 +1,75 @@
 .container {
-  padding: 20px;
+  padding: 24px 20px 80px;
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .title {
   font-size: 24px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
   color: var(--text-primary);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px 12px;
 }
 
-.loading, .empty {
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
   text-align: center;
-  padding: 40px;
   color: var(--text-secondary);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.4;
 }
 
 .empty h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
   color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
 .empty p {
-  color: var(--text-secondary);
-}
-.userInfo {
-  background: var(--bg-secondary);
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border-color);
-}
-
-.userInfo h2 {
-  font-size: 18px;
-  color: var(--text-primary);
-  margin-bottom: 5px;
-}
-
-.userInfo p {
-  color: var(--text-secondary);
   font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* SKELETON */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonThumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonLine {
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
 }

@@ -7,12 +7,15 @@ import { getHistory, clearHistory, type HistoryItem } from '../../utils/history'
 import { getSavedVideos } from '../../api/saved'
 import { fetchVideoDetailsBatch, fetchChannelsBatch } from '../../api/youtube'
 import { getMySubscriptions } from '../../api/subscriptions'
+import { getMyVideos, deleteUserVideo, type UserVideoRecord } from '../../api/userVideos'
 import { formatDistanceToNow } from 'date-fns'
+import { formatNumber } from '../../utils/formatNumber'
 import styles from './UserProfile.module.css'
 import type { YouTubeVideo, YouTubeChannel } from '../../types/youtube'
 import { API_BASE_URL } from '../../api/config'
+import { UploadVideo } from '../../Components/UploadVideo/UploadVideo'
 
-type Tab = 'history' | 'saved' | 'subscriptions'
+type Tab = 'history' | 'saved' | 'subscriptions' | 'myvideos'
 
 const CROP_SIZE = 260
 
@@ -26,6 +29,8 @@ export const UserProfile = () => {
   const [savedVideos, setSavedVideos] = useState<YouTubeVideo[]>([])
   const [subscriptions, setSubscriptions] = useState<YouTubeChannel[]>([])
   const [loading, setLoading] = useState(false)
+  const [myVideos, setMyVideos] = useState<UserVideoRecord[]>([])
+  const [showUpload, setShowUpload] = useState(false)
 
   const [cropSrc, setCropSrc] = useState<string | null>(null)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
@@ -58,6 +63,13 @@ export const UserProfile = () => {
             setSubscriptions(channels)
           }
         })
+        .catch(console.error)
+        .finally(() => setLoading(false))
+    }
+    if (tab === 'myvideos') {
+      setLoading(true)
+      getMyVideos()
+        .then((res) => { if (res.success) setMyVideos(res.videos) })
         .catch(console.error)
         .finally(() => setLoading(false))
     }
@@ -240,15 +252,16 @@ export const UserProfile = () => {
         </div>
 
         <div className={styles.tabs}>
-          {(['history', 'saved', 'subscriptions'] as Tab[]).map((t) => (
+          {(['history', 'saved', 'subscriptions', 'myvideos'] as Tab[]).map((t) => (
             <button
               key={t}
               className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
-              onClick={() => setTab(t)}
+              onClick={() => { setTab(t); setShowUpload(false) }}
             >
               {t === 'history' && 'История'}
               {t === 'saved' && 'Сохранённые'}
               {t === 'subscriptions' && 'Подписки'}
+              {t === 'myvideos' && 'Мои видео'}
             </button>
           ))}
         </div>
@@ -323,6 +336,76 @@ export const UserProfile = () => {
                   </Link>
                 ))}
               </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'myvideos' && (
+          <div>
+            {showUpload ? (
+              <UploadVideo
+                onSuccess={() => {
+                  setShowUpload(false)
+                  setLoading(true)
+                  getMyVideos()
+                    .then((res) => { if (res.success) setMyVideos(res.videos) })
+                    .catch(console.error)
+                    .finally(() => setLoading(false))
+                }}
+                onCancel={() => setShowUpload(false)}
+              />
+            ) : (
+              <>
+                <div className={styles.myVideosHeader}>
+                  <button className={styles.uploadBtn} onClick={() => setShowUpload(true)}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z" />
+                    </svg>
+                    Загрузить видео
+                  </button>
+                </div>
+
+                {loading ? (
+                  <p className={styles.empty}>Загрузка...</p>
+                ) : myVideos.length === 0 ? (
+                  <div className={styles.uploadPrompt}>
+                    <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor" style={{ opacity: 0.3 }}>
+                      <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
+                    </svg>
+                    <p>У вас пока нет видео</p>
+                    <span>Нажмите «Загрузить видео» чтобы поделиться своим контентом</span>
+                  </div>
+                ) : (
+                  <div className={styles.videoGrid}>
+                    {myVideos.map((v) => (
+                      <div key={v.id} className={styles.myVideoCard}>
+                        <Link to={`/user-video/${v.id}`}>
+                          <div className={styles.myVideoThumb}>
+                            {v.thumbnailUrl ? (
+                              <img src={v.thumbnailUrl} alt={v.title} />
+                            ) : (
+                              <div className={styles.noThumb}>▶</div>
+                            )}
+                          </div>
+                          <p className={styles.videoTitle}>{v.title}</p>
+                          <p className={styles.videoChannel}>{formatNumber(v.viewCount)} просмотров</p>
+                        </Link>
+                        <button
+                          className={styles.deleteVideoBtn}
+                          onClick={async () => {
+                            if (!confirm('Удалить видео?')) return
+                            await deleteUserVideo(v.id)
+                            setMyVideos((prev) => prev.filter((x) => x.id !== v.id))
+                          }}
+                          title="Удалить"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}

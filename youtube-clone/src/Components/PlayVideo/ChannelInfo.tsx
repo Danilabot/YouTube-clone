@@ -18,7 +18,7 @@ const ChannelInfo = ({ channelId, channelData }: ChannelInfoProps) => (
         <p>{channelData?.snippet?.title}</p>
       </Link>
       <span>
-        {channelData ? formatNumber(channelData.statistics.subscriberCount) : '1M'} Subscribers
+        {channelData ? formatNumber(channelData.statistics.subscriberCount) : ''} подписчиков
       </span>
     </div>
     <SubscribeButton channelId={channelId} />

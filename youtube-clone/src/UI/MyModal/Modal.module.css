@@ -44,7 +44,7 @@
 }
 
 .myModalContent {
-  background: white;
+  background: var(--menu-bg);
   border-radius: 24px;
   padding: 40px;
   max-width: 440px;
@@ -58,6 +58,10 @@
 
 .myModal.active .myModalContent {
   transform: scale(1);
+}
+
+.wide {
+  max-width: 780px;
 }
 
 /* Стили для скролла внутри модалки */

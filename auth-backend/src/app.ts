@@ -8,6 +8,7 @@ import dislikeRoutes from './routes/dislikeRoutes'
 import subscriptionRoutes from './routes/subscriptionRoutes'
 import commentLikeRoutes from './routes/commentLikeRoutes'
 import savedVideoRoutes from './routes/savedVideoRoutes'
+import userVideoRoutes from './routes/userVideoRoutes'
 
 const app = express()
 
@@ -40,6 +41,7 @@ app.use('/api/videos', dislikeRoutes)
 app.use('/api/subscriptions', subscriptionRoutes)
 app.use('/api/comments', commentLikeRoutes)
 app.use('/api/saved', savedVideoRoutes)
+app.use('/api/user-videos', userVideoRoutes)
 
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'OK', timestamp: new Date(), database: 'PostgreSQL' })

@@ -5,9 +5,10 @@ interface MyModalProps {
   children: ReactNode
   visible: boolean
   setVisible: (visible: boolean) => void
+  wide?: boolean
 }
 
-export const MyModal = ({ children, visible, setVisible }: MyModalProps) => {
+export const MyModal = ({ children, visible, setVisible, wide }: MyModalProps) => {
   useEffect(() => {
     document.body.style.overflow = visible ? 'hidden' : ''
     return () => {
@@ -20,7 +21,10 @@ export const MyModal = ({ children, visible, setVisible }: MyModalProps) => {
       className={`${styles.myModal}${visible ? ` ${styles.active}` : ''}`}
       onClick={() => setVisible(false)}
     >
-      <div className={styles.myModalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`${styles.myModalContent}${wide ? ` ${styles.wide}` : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </div>
     </div>

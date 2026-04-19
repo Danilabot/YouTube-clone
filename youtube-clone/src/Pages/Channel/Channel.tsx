@@ -10,15 +10,15 @@ type TabType = 'videos' | 'about'
 
 const Channel = () => {
   const { channelId } = useParams<{ channelId: string }>()
-
   const [channelInfo, setChannelInfo] = useState<YouTubeChannel | null>(null)
   const [channelVideos, setChannelVideos] = useState<YouTubeVideo[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<TabType>('videos')
+  const [descExpanded, setDescExpanded] = useState(false)
 
   useEffect(() => {
     if (!channelId) return
-
+    setLoading(true)
     const loadChannelData = async () => {
       try {
         const [info, videos] = await Promise.all([
@@ -33,24 +33,39 @@ const Channel = () => {
         setLoading(false)
       }
     }
-
     loadChannelData()
   }, [channelId])
 
-  if (loading) return <div className={styles.loading}>Загрузка...</div>
-  if (!channelInfo || !channelId) return <div className={styles.error}>Канал не найден</div>
+  if (loading) {
+    return (
+      <div className={styles.channel_page}>
+        <div className={styles.skeletonBanner} />
+        <div className={styles.skeletonInfo}>
+          <div className={styles.skeletonAvatar} />
+          <div className={styles.skeletonDetails}>
+            <div className={styles.skeletonLine} style={{ width: 200, height: 24 }} />
+            <div className={styles.skeletonLine} style={{ width: 120, height: 14 }} />
+            <div className={styles.skeletonLine} style={{ width: 180, height: 14 }} />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!channelInfo || !channelId) {
+    return <div className={styles.error}>Канал не найден</div>
+  }
 
   const { snippet, statistics } = channelInfo
+  const desc = snippet.description ?? ''
+  const SHORT_DESC = 150
 
   return (
     <div className={styles.channel_page}>
       <div className={styles.channel_header}>
         {channelInfo.brandingSettings?.image?.bannerExternalUrl && (
           <div className={styles.channel_banner}>
-            <img
-              src={channelInfo.brandingSettings.image.bannerExternalUrl}
-              alt="Channel banner"
-            />
+            <img src={channelInfo.brandingSettings.image.bannerExternalUrl} alt="Баннер канала" />
           </div>
         )}
 
@@ -67,14 +82,25 @@ const Channel = () => {
 
             <div className={styles.channel_stats}>
               <span>{formatNumber(statistics.subscriberCount)} подписчиков</span>
-              <span>•</span>
+              <span>·</span>
               <span>{formatNumber(statistics.videoCount)} видео</span>
             </div>
 
-            <p className={styles.channel_description}>
-              {snippet.description?.slice(0, 150)}
-              {(snippet.description?.length ?? 0) > 150 && '...'}
-            </p>
+            {desc && (
+              <p className={styles.channel_description}>
+                {descExpanded || desc.length <= SHORT_DESC
+                  ? desc
+                  : desc.slice(0, SHORT_DESC) + '...'}
+                {desc.length > SHORT_DESC && (
+                  <button
+                    className={styles.descToggle}
+                    onClick={() => setDescExpanded((p) => !p)}
+                  >
+                    {descExpanded ? ' Свернуть' : ' Ещё'}
+                  </button>
+                )}
+              </p>
+            )}
 
             <SubscribeButton channelId={channelId} />
           </div>
@@ -102,7 +128,7 @@ const Channel = () => {
             {channelVideos.map((video) => (
               <Link key={video.id} to={`/video/${video.snippet.categoryId}/${video.id}`}>
                 <div className={styles.video_card}>
-                  <img src={video.snippet.thumbnails.medium?.url} alt="" />
+                  <img src={video.snippet.thumbnails.medium?.url} alt={video.snippet.title} />
                   <h4>{video.snippet.title}</h4>
                   <p>{formatNumber(video.statistics.viewCount)} просмотров</p>
                 </div>
@@ -115,18 +141,26 @@ const Channel = () => {
           <div className={styles.about_tab}>
             <div className={styles.about_section}>
               <h3>Описание</h3>
-              <p>{snippet.description || 'Нет описания'}</p>
+              <p>{desc || 'Нет описания'}</p>
             </div>
             <div className={styles.about_section}>
               <h3>Статистика</h3>
               <div className={styles.stats_grid}>
                 <div className={styles.stat_item}>
                   <span>Дата регистрации</span>
-                  <strong>{new Date(snippet.publishedAt).toLocaleDateString()}</strong>
+                  <strong>{new Date(snippet.publishedAt).toLocaleDateString('ru-RU')}</strong>
                 </div>
                 <div className={styles.stat_item}>
                   <span>Всего просмотров</span>
                   <strong>{formatNumber(statistics.viewCount)}</strong>
+                </div>
+                <div className={styles.stat_item}>
+                  <span>Подписчики</span>
+                  <strong>{formatNumber(statistics.subscriberCount)}</strong>
+                </div>
+                <div className={styles.stat_item}>
+                  <span>Видео</span>
+                  <strong>{formatNumber(statistics.videoCount)}</strong>
                 </div>
               </div>
             </div>

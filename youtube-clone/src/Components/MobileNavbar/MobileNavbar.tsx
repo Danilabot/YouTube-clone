@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { openAuthModal } from '../../redux/slices/uiSlice'
+import { openAuthModal, openUploadModal } from '../../redux/slices/uiSlice'
 import styles from './MobileNavbar.module.css'
 
 const HomeIcon = () => (
@@ -44,8 +44,9 @@ export const MobileNavbar = () => {
   const handleAdd = () => {
     if (!user) {
       dispatch(openAuthModal('login'))
+    } else {
+      dispatch(openUploadModal())
     }
-    // TODO: открыть форму загрузки видео
   }
 
   return (
